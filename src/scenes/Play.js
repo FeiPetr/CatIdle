@@ -67,17 +67,18 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.buyOrangeButton = this.add.text(800, 100, 'Buy Orange Cat for ' + this.orangeCatCost,{ fill: '#FFA500' });
         this.orangeNumText = this.add.text(100, 150, '# Orange Cats: ' + this.orangeCatNum, { fill: '#FFA500' });
         this.buyOrangeButton.setInteractive();
-        this.buyOrangeButton.on('pointerdown', () => this.spawnCat(this.orangeCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        this.buyOrangeButton.on('pointerdown', () => this.spawnOrangeCat(this.orangeCat,this.orangeCatCost,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
         
         this.buyBlackButton = this.add.text(800, 150, 'Buy Black Cat for ' + this.blackCatCost,{ fill: '#000000' });
         this.blackNumText = this.add.text(100, 200, '# Black Cats: ' + this.blackCatNum, { fill: '#000000' });
         this.buyBlackButton.setInteractive();
-        this.buyBlackButton.on('pointerdown', () => this.spawnCat(this.blackCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        this.buyBlackButton.on('pointerdown', () => this.spawnBlackCat(this.blackCat,this.blackCatCost,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
         
         this.buyTortieButton = this.add.text(800, 200, 'Buy Tortie Cat for ' + this.tortieCatCost,{ fill: '#964B00' });
         this.tortieNumText = this.add.text(100, 250, '# Tortie Cats: ' + this.tortieCatNum, { fill: '#964B00' });
         this.buyTortieButton.setInteractive();
-        this.buyTortieButton.on('pointerdown', () => this.spawnCat(this.tortieCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        this.buyTortieButton.on('pointerdown', () => this.spawnTortieCat(this.tortieCat,this.tortieCatCost,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        //spawnCat(group,workerCost,catNum,x,y){
 
 
 
@@ -168,7 +169,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
               this.onScreen+=1;
           }
         }
-        this.prodRate = this.catnipMultiplier*this.onScreen; //calculating production rate
+        this.prodRate = this.orangeCatNum+3*this.blackCatNum+10*this.tortieCatNum; //calculating production rate
         // whoops, have to redo the multipler
           // if the cat is on the map
             // generate money every five seconds
@@ -178,27 +179,64 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
   
       // Spawns cat by passing array of cat sprites through
       // will probably need additional logic or a different method for each color of cat because this is only geared toward one
-      spawnCat(group,x,y){
-        
-        
-        for(var i = 0; i < this.orangeCat.getLength();i++)
+      // Spawns cat by passing array of cat sprites through
+      // will probably need additional logic or a different method for each color of cat because this is only geared toward one
+      spawnOrangeCat(group,workerCost,x,y){
+        for(var i = 0; i < group.getLength();i++)
         {
-          console.log(this.orangeCat.getChildren()[i].y);
+          //console.log(this.orangeCat.getChildren()[i].y);
 
-          if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= this.workerCost) // figure out how to stop using hardcoded magic numbers dude
-          {
-            group.getChildren()[i].y = y;
-            group.getChildren()[i].x = x;
-            this.money-=this.workerCost;
-            this.catsOnBoard += 1;
-            this.workerCost+=10;
-            this.workerSell+=5; //find a formula for these later maybe, i want it to scale
+          //if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
+          //{
+            //group.getChildren()[i].y = y;
+            //group.getChildren()[i].x = x;
+            this.money-=workerCost; // number of catnip goes down
+            this.orangeCatNum += 1; // number of cats increases
+            // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
+            workerCost+=10;
             break;
-          }
+         // }
         }
-        
+      }
 
+      spawnBlackCat(group,workerCost,x,y)
+      {
+        for(var i = 0; i < group.getLength();i++)
+        {
+          //console.log(this.orangeCat.getChildren()[i].y);
 
+          //if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
+          //{
+            //group.getChildren()[i].y = y;
+            //group.getChildren()[i].x = x;
+            this.money-=workerCost; // number of catnip goes down
+            this.blackCatNum += 1; // number of cats increases
+            // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
+
+            workerCost+=10;
+            break;
+         // }
+        }
+      }
+
+      spawnTortieCat(group,workerCost,x,y)
+      {
+        for(var i = 0; i < group.getLength();i++)
+        {
+          //console.log(this.orangeCat.getChildren()[i].y);
+
+          //if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
+          //{
+            //group.getChildren()[i].y = y;
+            //group.getChildren()[i].x = x;
+            this.money-=workerCost; // number of catnip goes down
+            this.tortieCatNum += 1; // number of cats increases
+            // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
+
+            workerCost+=10;
+            break;
+         // }
+        }
       }
 
 
