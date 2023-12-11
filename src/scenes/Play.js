@@ -5,6 +5,15 @@ I can only assume it's a phaser bug.
 
 */
 
+/*
+TO DO:
+
+Shift around the UI
+Implement Three tiers of cat instead of just one
+Each cat 
+
+*/
+
 
 class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser's predef scene object
     constructor() // The constructor (a special method for creating and initializing an object) uses
@@ -26,12 +35,11 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.orangeCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set orangeCat
         this.blackCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set blackCat
         this.tortieCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set tortieCat
-
         // cats?
 
 
 
-        // Money text
+        // Money text-- catnip as currency
         this.moneyText = this.add.text(100, 100, "Catnip: " + Math.floor(this.money), { fill: '#0f0' });
         this.money = 0;
 
@@ -60,15 +68,6 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         // Defining keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-
-
-        // WIN flag
-        this.win = false;
-        this.workersSacrificed = 0; // Keeping track of orangeCat sacrificed for win condition
-
-        this.explosionImg = this.add.image(0, 0, 'explode').setOrigin(0);
-        this.alpha = 0; // alpha gradually gets deeper as danger gets higher
-        this.explosionImg.setAlpha(this.alpha);
         
 
      }
@@ -110,13 +109,13 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         }
         this.prodRate = this.catnipMultiplier*this.onScreen; //calculating production rate
         // whoops, have to redo the multipler
-          // if the enemy is on the map
+          // if the cat is on the map
             // generate money every five seconds
 
       }
 
 
-      // Spawns enemy group; Input the velocity
+      // Spawns cat
       spawnCat(group,x,y){
 
         for(var i = 0; i < this.orangeCat.getLength();i++)
