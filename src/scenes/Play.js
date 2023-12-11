@@ -44,7 +44,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       
     create(){
 
-
+        this.timer = 0;
         // place background
         this.bgArt = this.add.tileSprite(0, 0, 1280, 1281, 'map').setOrigin(0, 0); // background set
         this.orangeCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set orangeCat
@@ -60,6 +60,8 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.blackCatCost = 50;
         this.tortieCatCost = 100; // starting cost of each cat
 
+        //Timer
+        this.timerText = this.add.text(500, 100, 'Time: 0',{ fill: '#FFA500' });
         // Buy and Sell Buttons for all cats, text
         this.buyOrangeButton = this.add.text(800, 100, 'Buy Orange Cat for ' + this.orangeCatCost,{ fill: '#FFA500' });
         this.orangeNumText = this.add.text(100, 150, '# Orange Cats: ' + this.orangeCatNum, { fill: '#FFA500' });
@@ -105,13 +107,16 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
      }
 
-     update() {
-
+     update(time, delta) {
+      
+      this.timer += delta;
+      
       if (Phaser.Input.Keyboard.JustDown(keyP)) { // Pause menu
         this.scene.launch("pauseScene");
         this.scene.pause();
       }
         
+        this.timerText.text =  "Time: " + Math.round(this.timer/1000);
         this.moneyText.text =  "Catnip: " + Math.floor(this.money);
         this.prodRateText.text = 'Production Rate: ' + this.prodRate + ' catnip per second';
 
@@ -162,7 +167,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
         for(var i = 0; i < this.orangeCat.getLength();i++)
         {
-          //console.log(this.orangeCat.getChildren()[i].y);
+          console.log(this.orangeCat.getChildren()[i].y);
 
           if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= this.workerCost) // figure out how to stop using hardcoded magic numbers dude
           {
