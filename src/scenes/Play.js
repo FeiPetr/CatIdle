@@ -38,7 +38,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
     preload() {
       // load images/tile sprites
-        this.load.image('map', './assets/protobg.png'); // background
+        this.load.image('map', './assets/blankbg.png'); // background
         this.load.image('catnipClickable', './assets/catnip.PNG'); // catnip
       }
       
@@ -50,13 +50,37 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.orangeCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set orangeCat
         this.blackCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set blackCat
         this.tortieCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set tortieCat
-        // cats?
+        // cats sprites- when catnip is clicked, place cat on screen. not a priority to implement.
+
+        this.orangeCatNum = 0;
+        this.blackCatNum = 0;
+        this.tortieCatNum = 0; // number of each cat
+
+        this.orangeCatCost = 10;
+        this.blackCatCost = 50;
+        this.tortieCatCost = 100; // starting cost of each cat
+
+        // Buy and Sell Buttons for all cats, text
+        this.buyOrangeButton = this.add.text(800, 100, 'Buy Orange Cat for ' + this.orangeCatCost,{ fill: '#FFA500' });
+        this.orangeNumText = this.add.text(100, 150, '# Orange Cats: ' + this.orangeCatNum, { fill: '#FFA500' });
+        this.buyOrangeButton.setInteractive();
+        this.buyOrangeButton.on('pointerdown', () => this.spawnCat(this.orangeCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        
+        this.buyBlackButton = this.add.text(800, 150, 'Buy Black Cat for ' + this.blackCatCost,{ fill: '#000000' });
+        this.blackNumText = this.add.text(100, 200, '# Black Cats: ' + this.blackCatNum, { fill: '#000000' });
+        this.buyBlackButton.setInteractive();
+        this.buyBlackButton.on('pointerdown', () => this.spawnCat(this.blackCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        
+        this.buyTortieButton = this.add.text(800, 200, 'Buy Tortie Cat for ' + this.tortieCatCost,{ fill: '#964B00' });
+        this.tortieNumText = this.add.text(100, 250, '# Tortie Cats: ' + this.tortieCatNum, { fill: '#964B00' });
+        this.buyTortieButton.setInteractive();
+        this.buyTortieButton.on('pointerdown', () => this.spawnCat(this.tortieCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
 
 
 
         // Money text-- catnip as currency
         this.moneyText = this.add.text(100, 100, "Catnip: " + Math.floor(this.money), { fill: '#0f0' });
-        this.money = 0;
+        this.money = 0; // initialize amount of catnip
 
         // Click catnipClickable to get money
         this.catnipClickable = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height/2, 'catnipClickable');
@@ -68,18 +92,10 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.catnipMultiplier = 1; // cat multiplier
         // will need to code a way to keep track of the production rate between three different kinds of cats
 
-        //this.multiplierNeeded = 5; // Workers needed to sacrifice for multiplier to take effect
-        //this.multiplierProgress = 0; // Current amount of multiplier needed
-        this.prodRateText = this.add.text(800, 150, 'Production Rate: ' + this.prodRate + ' dollars per second', { fill: '#0f0' });
+        this.prodRateText = this.add.text(800, 500, 'Production Rate: ' + this.prodRate + ' dollars per second', { fill: '#0f0' });
 
 
-        this.workersOnBoard = 0; // orangeCats on screen
-
-        // Buy and Sell Buttons, text
-        this.buyButton = this.add.text(800, 100, 'Buy Cat for ' + this.workerCost,{ fill: '#0f0' });
-        this.workerNumText = this.add.text(100, 150, '# Cats: ' + this.workersOnBoard, { fill: '#0f0' });
-        this.buyButton.setInteractive();
-        this.buyButton.on('pointerdown', () => this.spawnCat(this.orangeCat,Phaser.Math.Between(40, 1200),Phaser.Math.Between(40, 1200))); // has to be in create or it keeps stacking
+        //this.catsOnBoard = 0; // Cats on screen
 
 
         // Defining keys
@@ -97,13 +113,21 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       }
         
         this.moneyText.text =  "Catnip: " + Math.floor(this.money);
-        this.buyButton.text = "Buy Cat for " + this.workerCost;
-        this.workerNumText.text = '# Cats: ' + this.workersOnBoard;
-        this.prodRateText.text = 'Production Rate: ' + this.prodRate + ' dollars per second';
+        this.prodRateText.text = 'Production Rate: ' + this.prodRate + ' catnip per second';
 
-        this.catnipClickable.x = this.sys.game.config.width / 2; // trying to get catnipClickable to appear on screeen
+        this.orangeNumText.text = '# Orange Cats: ' + this.orangeCatNum;
+        this.buyOrangeButton.text = 'Buy Orange Cat for ' + this.orangeCatCost;
+
+        this.blackNumText.text = '# Black Cats: ' + this.blackCatNum;
+        this.buyBlackButton.text = 'Buy Black Cat for ' + this.blackCatCost;
+
+        this.tortieNumText.text = '# Tortie Cats: ' + this.tortieCatNum;
+        this.buyTortieButton.text = 'Buy Tortie Cat for ' + this.tortieCatCost;
+
+
+        this.catnipClickable.x = this.sys.game.config.width / 2; // get catnipClickable to appear on screeen
         this.catnipClickable.y = this.sys.game.config.height / 2;
-        
+      
 
 
         if(Phaser.Input.Keyboard.JustDown(keyR)) {
@@ -132,7 +156,8 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       }
 
 
-      // Spawns cat
+      // Spawns cat by passing array of cat sprites through
+      // will probably need additional logic or a different method for each color of cat because this is only geared toward one
       spawnCat(group,x,y){
 
         for(var i = 0; i < this.orangeCat.getLength();i++)
@@ -144,7 +169,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
             group.getChildren()[i].y = y;
             group.getChildren()[i].x = x;
             this.money-=this.workerCost;
-            this.workersOnBoard += 1;
+            this.catsOnBoard += 1;
             this.workerCost+=10;
             this.workerSell+=5; //find a formula for these later maybe, i want it to scale
             break;
