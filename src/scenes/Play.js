@@ -6,11 +6,26 @@ I can only assume it's a phaser bug.
 */
 
 /*
+Basic idea:
+
+Catnip as currency
+Click catnip to manually get catnip
+Buy cats to increase catnip production
+Cats appear on screen when you buy them if we have time (i can draw them)
+(maybe add meowing or purring side effect when buying. for whimsy)
+Three tiers of cats
+--Orange cat: increases production rate by 1 catnip a second
+--Black cat: increases production rate by 3 catnip a second
+--Tortie cat: increases production rate by 10 catnip a second
+-profit
+
 TO DO:
 
-Shift around the UI
+Create and shift around the UI
 Implement Three tiers of cat instead of just one
-Each cat 
+Figure out price scaling with the cats
+Find out how to calculate production rate
+Cat balancing (cost and production)
 
 */
 
@@ -49,14 +64,16 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.catnipClickable.on('pointerdown', () => {this.money++});
 
 
-        this.prodRate = 0;
-        this.catnipMultiplier = 1; // catnipClickable multiplier
-        this.multiplierNeeded = 5; // Workers needed to sacrifice for multiplier to take effect
-        this.multiplierProgress = 0; // Current amount of multiplier needed
+        this.prodRate = 0; // Production rate
+        this.catnipMultiplier = 1; // cat multiplier
+        // will need to code a way to keep track of the production rate between three different kinds of cats
+
+        //this.multiplierNeeded = 5; // Workers needed to sacrifice for multiplier to take effect
+        //this.multiplierProgress = 0; // Current amount of multiplier needed
         this.prodRateText = this.add.text(800, 150, 'Production Rate: ' + this.prodRate + ' dollars per second', { fill: '#0f0' });
 
 
-        this.workersOnBoard = 0; // orangeCat on screen
+        this.workersOnBoard = 0; // orangeCats on screen
 
         // Buy and Sell Buttons, text
         this.buyButton = this.add.text(800, 100, 'Buy Cat for ' + this.workerCost,{ fill: '#0f0' });
