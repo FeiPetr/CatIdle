@@ -44,7 +44,8 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       
     create(){
 
-        this.timer = 0;
+        this.totaltimer = 0;
+        this.moneytimer = 0;
         // place background
         this.bgArt = this.add.tileSprite(0, 0, 1280, 1281, 'map').setOrigin(0, 0); // background set
         this.orangeCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set orangeCat
@@ -61,7 +62,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.tortieCatCost = 100; // starting cost of each cat
 
         //Timer
-        this.timerText = this.add.text(500, 100, 'Time: 0',{ fill: '#FFA500' });
+        this.totaltimerText = this.add.text(500, 100, 'Time: 0',{ fill: '#FFA500' });
         // Buy and Sell Buttons for all cats, text
         this.buyOrangeButton = this.add.text(800, 100, 'Buy Orange Cat for ' + this.orangeCatCost,{ fill: '#FFA500' });
         this.orangeNumText = this.add.text(100, 150, '# Orange Cats: ' + this.orangeCatNum, { fill: '#FFA500' });
@@ -109,14 +110,27 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
      update(time, delta) {
       
-      this.timer += delta;
+      this.totaltimer += delta;
+      this.moneytimer += delta;
       
+      //for loop for adding money from the cats
+     
+      if (this.moneytimer>1000 && this.totaltimer>0){
+          this.money += 1*this.orangeCatNum;
+          this.money += 3*this.blackCatNum;
+          this.money += 10*this.tortieCatNum;
+          this.moneytimer = 0;
+          
+      }
+      
+      
+     
       if (Phaser.Input.Keyboard.JustDown(keyP)) { // Pause menu
         this.scene.launch("pauseScene");
         this.scene.pause();
       }
         
-        this.timerText.text =  "Time: " + Math.round(this.timer/1000);
+        this.totaltimerText.text =  "Time: " + Math.round(this.totaltimer/1000);
         this.moneyText.text =  "Catnip: " + Math.floor(this.money);
         this.prodRateText.text = 'Production Rate: ' + this.prodRate + ' catnip per second';
 
@@ -142,6 +156,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
 
         // for every member of the group
+  
         this.onScreen = 0;
         for(var i = 0; i < this.orangeCat.getLength();i++)
         {
@@ -149,7 +164,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
           if(this.orangeCat.getChildren()[i].y <= 1200 && this.orangeCat.getChildren()[i].x <= 1200) // figure out how to stop using hardcoded magic numbers
           {
               this.money+=0.02 * this.catnipMultiplier;
-              //console.log(Math.floor(this.money));
+              console.log(Math.floor(this.money));
               this.onScreen+=1;
           }
         }
@@ -160,11 +175,12 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
       }
 
-
+  
       // Spawns cat by passing array of cat sprites through
       // will probably need additional logic or a different method for each color of cat because this is only geared toward one
       spawnCat(group,x,y){
-
+        
+        
         for(var i = 0; i < this.orangeCat.getLength();i++)
         {
           console.log(this.orangeCat.getChildren()[i].y);
@@ -180,6 +196,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
             break;
           }
         }
+        
 
 
       }
