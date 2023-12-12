@@ -43,6 +43,15 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.load.image('orangecatimg', './assets/orange.PNG'); 
         this.load.image('blackcatimg', './assets/black.PNG');
         this.load.image('tortiecatimg', './assets/tortie.PNG'); 
+        this.load.audio('Hiss','./assets/Free_Cat_SFX_Hiss.wav');
+        this.load.audio('Litter','./assets/Free_Cat_SFX_Litter.wav');
+        this.load.audio('Meow1','./assets/Free_Cat_SFX_Meow1.wav');
+        this.load.audio('Meow2','./assets/Free_Cat_SFX_Meow2.wav');
+        this.load.audio('Meow3','./assets/Free_Cat_SFX_Meow3.wav');
+        this.load.audio('Meow4','./assets/Free_Cat_SFX_Meow4.wav');
+        this.load.audio('Purr','./assets/Free_Cat_SFX_Purr.wav');
+        this.load.audio('Meow5','./assets/436541__mafon2__cat-meow (1).wav');
+        
 
       }
       
@@ -186,6 +195,7 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       // Spawns cat by passing array of cat sprites through
       // will probably need additional logic or a different method for each color of cat because this is only geared toward one
       spawnOrangeCat(group,workerCost,x,y){
+
         for(var i = 0; i < group.getLength();i++)
         {
           //console.log(this.orangeCat.getChildren()[i].y);
@@ -198,9 +208,29 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
             this.orangeCatNum += 1; // number of cats increases
             this.orangeCatCost= Math.floor(this.orangeCatCost*1.3);
 
+            //Playing a random cat sound out of 7 (I know this looks too long)
+            let randomSound = Phaser.Math.Between(0, 4);
+            if (randomSound == 0) {
+              this.sound.play('Meow1');
+            }
+            if (randomSound == 1) {
+              this.sound.play('Meow2');
+            }
+            if (randomSound == 2) {
+              this.sound.play('Meow3');
+            }
+            if (randomSound == 3) {
+              this.sound.play('Meow4');
+            }
+            if (randomSound == 4) {
+              this.sound.play('Meow5');
+            }
+            
+
             break;
           }
         }
+        
       }
 
       spawnBlackCat(group,workerCost,x,y)
@@ -218,6 +248,24 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
             // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
 
             this.blackCatCost= Math.floor(this.blackCatCost*1.3);
+
+            //Playing a random cat sound out of 7 (I know this looks too long)
+            let randomSound = Phaser.Math.Between(0, 4);
+            if (randomSound == 0) {
+              this.sound.play('Meow1');
+            }
+            if (randomSound == 1) {
+              this.sound.play('Meow2');
+            }
+            if (randomSound == 2) {
+              this.sound.play('Meow3');
+            }
+            if (randomSound == 3) {
+              this.sound.play('Meow4');
+            }
+            if (randomSound == 4) {
+              this.sound.play('Meow5');
+            }
             break;
          }
         }
@@ -238,6 +286,23 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
             // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
 
             this.tortieCatCost= Math.floor(this.tortieCatCost*1.3);
+            //Playing a random cat sound out of 7 (I know this looks too long)
+            let randomSound = Phaser.Math.Between(0, 4);
+            if (randomSound == 0) {
+              this.sound.play('Meow1');
+            }
+            if (randomSound == 1) {
+              this.sound.play('Meow2');
+            }
+            if (randomSound == 2) {
+              this.sound.play('Meow3');
+            }
+            if (randomSound == 3) {
+              this.sound.play('Meow4');
+            }
+            if (randomSound == 4) {
+              this.sound.play('Meow5');
+            }
             break;
          }
         }
