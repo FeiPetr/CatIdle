@@ -38,8 +38,8 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
     preload() {
       // load images/tile sprites
-        this.load.image('map', './assets/blankbg.png'); // background
-        this.load.image('catnipClickable', './assets/catnip.PNG'); // catnip
+        this.load.image('map', './assets/blankbg.PNG'); // background
+        this.load.image('catnipClickable', './assets/catnip.png'); // catnip
         this.load.image('orangecatimg', './assets/orange.PNG'); 
         this.load.image('blackcatimg', './assets/black.PNG');
         this.load.image('tortiecatimg', './assets/tortie.PNG'); 
