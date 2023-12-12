@@ -6,8 +6,8 @@ class Menu extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
     preload() {
         // load audio
-        this.load.audio('bgm', './assets/engine.wav');
-        this.load.image('menuscreen', './assets/metromenu.png');
+        this.load.audio('bgm', './assets/happyday.mp3');
+        this.load.image('menuscreen', './assets/catnipmenu.png');
     }
       
     create(){
@@ -32,7 +32,7 @@ class Menu extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-          this.scene.start("instructScene");
+          this.scene.start("playScene");
         }
       }
 }
