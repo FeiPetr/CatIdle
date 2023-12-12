@@ -40,6 +40,10 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       // load images/tile sprites
         this.load.image('map', './assets/blankbg.png'); // background
         this.load.image('catnipClickable', './assets/catnip.PNG'); // catnip
+        this.load.image('orangecatimg', './assets/orange.PNG'); 
+        this.load.image('blackcatimg', './assets/black.PNG');
+        this.load.image('tortiecatimg', './assets/tortie.PNG'); 
+
       }
       
     create(){
@@ -48,9 +52,9 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.moneytimer = 0;
         // place background
         this.bgArt = this.add.tileSprite(0, 0, 1280, 1281, 'map').setOrigin(0, 0); // background set
-        this.orangeCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set orangeCat
-        this.blackCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set blackCat
-        this.tortieCat = this.physics.add.group({ key: 'enemy', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set tortieCat
+        this.orangeCat = this.physics.add.group({ key: 'orangecatimg', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set orangeCat
+        this.blackCat = this.physics.add.group({ key: 'blackcatimg', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set blackCat
+        this.tortieCat = this.physics.add.group({ key: 'tortiecatimg', frame: 0, repeat: 90, setXY: { x: 100000, y: 100000,stepY: 40} }); // Set tortieCat
         // cats sprites- when catnip is clicked, place cat on screen. not a priority to implement.
 
         this.orangeCatNum = 0;
@@ -126,10 +130,10 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
       
       
      
-      if (Phaser.Input.Keyboard.JustDown(keyP)) { // Pause menu
+      /*if (Phaser.Input.Keyboard.JustDown(keyP)) { // Pause menu
         this.scene.launch("pauseScene");
         this.scene.pause();
-      }
+      }*/
         
         this.totaltimerText.text =  "Time: " + Math.round(this.totaltimer/1000);
         this.moneyText.text =  "Catnip: " + Math.floor(this.money);
@@ -161,11 +165,11 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         this.onScreen = 0;
         for(var i = 0; i < this.orangeCat.getLength();i++)
         {
-          //console.log(this.orangeCat.getChildren()[i].y);
+          //console.log(this.orangeCat.getChildren()[i].y); // debug statement
           if(this.orangeCat.getChildren()[i].y <= 1200 && this.orangeCat.getChildren()[i].x <= 1200) // figure out how to stop using hardcoded magic numbers
           {
               this.money+=0.02 * this.catnipMultiplier;
-              console.log(Math.floor(this.money));
+              //console.log(Math.floor(this.money));
               this.onScreen+=1;
           }
         }
@@ -186,16 +190,16 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         {
           //console.log(this.orangeCat.getChildren()[i].y);
 
-          //if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
-          //{
-            //group.getChildren()[i].y = y;
-            //group.getChildren()[i].x = x;
+          if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
+          {
+            group.getChildren()[i].y = y; //put cats on screen
+            group.getChildren()[i].x = x;
             this.money-=workerCost; // number of catnip goes down
             this.orangeCatNum += 1; // number of cats increases
-            // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
-            workerCost+=10;
+            this.orangeCatCost= Math.floor(this.orangeCatCost*1.3);
+
             break;
-         // }
+          }
         }
       }
 
@@ -205,17 +209,17 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         {
           //console.log(this.orangeCat.getChildren()[i].y);
 
-          //if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
-          //{
-            //group.getChildren()[i].y = y;
-            //group.getChildren()[i].x = x;
+          if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
+          {
+            group.getChildren()[i].y = y;
+            group.getChildren()[i].x = x;
             this.money-=workerCost; // number of catnip goes down
             this.blackCatNum += 1; // number of cats increases
             // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
 
-            workerCost+=10;
+            this.blackCatCost= Math.floor(this.blackCatCost*1.3);
             break;
-         // }
+         }
         }
       }
 
@@ -225,17 +229,17 @@ class Play extends Phaser.Scene{ //creating js class 'menu' that extends phaser'
         {
           //console.log(this.orangeCat.getChildren()[i].y);
 
-          //if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
-          //{
-            //group.getChildren()[i].y = y;
-            //group.getChildren()[i].x = x;
+          if(group.getChildren()[i].y >= 1200 && group.getChildren()[i].x >= 1200 && this.money >= workerCost) // figure out how to stop using hardcoded magic numbers dude
+          {
+            group.getChildren()[i].y = y;
+            group.getChildren()[i].x = x;
             this.money-=workerCost; // number of catnip goes down
             this.tortieCatNum += 1; // number of cats increases
             // I don't know if this will increase the catNum outside. It probbaly will not so this might have to be done outside
 
-            workerCost+=10;
+            this.tortieCatCost= Math.floor(this.tortieCatCost*1.3);
             break;
-         // }
+         }
         }
       }
 
